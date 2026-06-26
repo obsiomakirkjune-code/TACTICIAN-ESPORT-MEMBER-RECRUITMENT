@@ -1,0 +1,338 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Orbitron:wght@700;900&family=Inter:wght@400;500;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body, #app { font-family: 'Inter', sans-serif; background: #0a0a14; color: #e0d4ff; min-height: 100vh; }
+
+  .navbar { position: sticky; top: 0; z-index: 100; background: rgba(10,10,20,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid #1e1a3a; padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .nav-brand { display: flex; align-items: center; gap: 10px; }
+  .nav-logo { width: 32px; height: 32px; }
+  .nav-name { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 900; color: #fff; letter-spacing: 2px; }
+  .nav-badge { font-size: 10px; color: #6c47d4; border: 1px solid #3d2e7a; border-radius: 4px; padding: 2px 8px; font-family: 'Rajdhani', sans-serif; font-weight: 600; letter-spacing: 1px; }
+
+  .hero { padding: 56px 24px 36px; text-align: center; position: relative; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, #1a0a3a 0%, transparent 70%); }
+  .hero-grid { position: absolute; inset: 0; opacity: 0.04; background-image: linear-gradient(#6c47d4 1px,transparent 1px),linear-gradient(90deg,#6c47d4 1px,transparent 1px); background-size: 40px 40px; }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-emblem { width: 80px; height: 80px; margin: 0 auto 20px; }
+  .hero-emblem svg { width: 100%; height: 100%; }
+  .hero-eyebrow { font-family: 'Rajdhani', sans-serif; font-size: 11px; letter-spacing: 4px; color: #6c47d4; text-transform: uppercase; margin-bottom: 12px; }
+  .hero-title { font-family: 'Orbitron', sans-serif; font-size: clamp(26px,6vw,48px); font-weight: 900; color: #fff; line-height: 1.05; letter-spacing: 2px; text-transform: uppercase; }
+  .hero-title span { color: #8b5cf6; }
+  .hero-sub { font-size: 14px; color: #8b7fc7; margin: 14px 0 0; font-family: 'Rajdhani', sans-serif; letter-spacing: 1px; }
+  .recruit-pill { display: inline-block; margin-top: 18px; padding: 6px 20px; background: rgba(108,71,212,0.15); border: 1px solid #6c47d4; border-radius: 6px; font-family: 'Rajdhani', sans-serif; font-size: 12px; color: #a090dd; letter-spacing: 2px; text-transform: uppercase; }
+  .hero-divider { width: 60px; height: 2px; background: linear-gradient(90deg,transparent,#6c47d4,transparent); margin: 22px auto 0; }
+
+  .section { padding: 36px 24px; border-top: 1px solid #141228; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+  .section-icon { width: 36px; height: 36px; background: rgba(108,71,212,0.15); border: 1px solid #3d2e7a; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #8b5cf6; font-size: 18px; flex-shrink: 0; }
+  .section-title { font-family: 'Orbitron', sans-serif; font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 2px; text-transform: uppercase; }
+  .section-line { flex: 1; height: 1px; background: linear-gradient(90deg,#2a2455,transparent); }
+
+  /* ROSTER */
+  .member-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(130px,1fr)); gap: 10px; }
+  .member-card { background: #12111f; border: 1px solid #1e1a3a; border-radius: 12px; padding: 18px 14px; text-align: center; transition: border-color 0.2s, transform 0.2s; }
+  .member-card:hover { border-color: #6c47d4; transform: translateY(-2px); }
+  .member-card.captain { border-color: #6c47d4; background: #14132a; }
+  .member-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#2a1a6a,#5b35c5); border: 2px solid #3d2e7a; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 900; color: #c0a8ff; }
+  .member-card.captain .member-avatar { border-color: #8b5cf6; background: linear-gradient(135deg,#4a2aa0,#7c3aed); }
+  .member-ign { font-family: 'Rajdhani', sans-serif; font-size: 14px; font-weight: 700; color: #e0d4ff; letter-spacing: 0.5px; }
+  .member-role { font-size: 10px; color: #6c47d4; margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
+  .role-badge { display: inline-block; padding: 2px 7px; background: rgba(108,71,212,0.15); border: 1px solid #3d2e7a; border-radius: 4px; font-size: 10px; color: #8b7fc7; margin-top: 6px; }
+  .member-card.captain .role-badge { background: rgba(108,71,212,0.25); border-color: #6c47d4; color: #c0a8ff; }
+
+  /* BENEFITS */
+  .benefit-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 14px; }
+  .benefit-card { background: #12111f; border: 1px solid #1e1a3a; border-radius: 12px; padding: 22px 18px; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .benefit-card:hover { border-color: #6c47d4; }
+  .benefit-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; }
+  .benefit-card.b1::before { background: linear-gradient(90deg,#5b35c5,#8b5cf6); }
+  .benefit-card.b2::before { background: linear-gradient(90deg,#1d4ed8,#7c3aed); }
+  .benefit-card.b3::before { background: linear-gradient(90deg,#7c3aed,#db2777); }
+  .benefit-icon { font-size: 26px; margin-bottom: 12px; display: block; }
+  .benefit-name { font-family: 'Rajdhani', sans-serif; font-size: 17px; font-weight: 700; color: #e0d4ff; margin-bottom: 7px; }
+  .benefit-bullets { list-style: none; margin-top: 10px; }
+  .benefit-bullets li { font-size: 12px; color: #8b7fc7; padding: 3px 0; display: flex; align-items: flex-start; gap: 7px; }
+  .benefit-bullets li::before { content: '▸'; color: #6c47d4; flex-shrink: 0; }
+
+  /* APPLICATION FORM */
+  .apply-wrap { max-width: 560px; margin: 0 auto; }
+  .apply-card { background: #12111f; border: 1px solid #2a2455; border-radius: 16px; padding: 32px 28px; position: relative; }
+  .apply-card::before { content: ''; position: absolute; top: 0; left: 20px; right: 20px; height: 2px; background: linear-gradient(90deg,transparent,#6c47d4,transparent); }
+  .apply-intro { font-size: 13px; color: #7068a0; margin-bottom: 24px; line-height: 1.6; }
+  .form-group { margin-bottom: 16px; }
+  .form-label { display: block; font-size: 11px; font-weight: 600; color: #8b7fc7; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 6px; }
+  .form-input { width: 100%; background: #0d0c1a; border: 1px solid #2a2455; border-radius: 8px; padding: 10px 14px; color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
+  .form-input:focus { border-color: #6c47d4; }
+  .form-input::placeholder { color: #3d3668; }
+  .form-hint { font-size: 11px; color: #5a527a; margin-top: 4px; }
+
+  /* RANK SELECTOR */
+  .rank-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-top: 6px; }
+  .rank-btn { background: #0d0c1a; border: 1px solid #2a2455; border-radius: 8px; padding: 8px 4px; cursor: pointer; text-align: center; transition: all 0.18s; }
+  .rank-btn:hover { border-color: #5b35c5; background: #14132a; }
+  .rank-btn.selected { border-color: #8b5cf6; background: rgba(108,71,212,0.2); }
+  .rank-icon { font-size: 20px; display: block; margin-bottom: 4px; }
+  .rank-name { font-size: 10px; font-family: 'Rajdhani', sans-serif; font-weight: 700; letter-spacing: 0.5px; color: #8b7fc7; line-height: 1.2; }
+  .rank-btn.selected .rank-name { color: #c0a8ff; }
+
+  .apply-btn { width: 100%; background: linear-gradient(135deg,#5b35c5,#8b5cf6); color: #fff; border: none; border-radius: 8px; padding: 13px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: opacity 0.2s, transform 0.2s; }
+  .apply-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* SUCCESS CARD */
+  .success-card { display: none; background: #0d0c1a; border: 1px solid #3d2e7a; border-radius: 12px; padding: 20px; margin-top: 20px; }
+  .success-top { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+  .success-avatar { width: 52px; height: 52px; border-radius: 50%; background: linear-gradient(135deg,#5b35c5,#8b5cf6); border: 2px solid #6c47d4; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 900; color: #fff; flex-shrink: 0; }
+  .success-name { font-family: 'Orbitron', sans-serif; font-size: 15px; font-weight: 700; color: #fff; }
+  .success-ids { font-size: 12px; color: #6058a0; margin-top: 3px; font-family: 'Rajdhani', sans-serif; }
+  .success-rank-display { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: rgba(108,71,212,0.1); border: 1px solid #3d2e7a; border-radius: 8px; }
+  .success-rank-icon { font-size: 22px; }
+  .success-rank-label { font-size: 10px; color: #6c47d4; letter-spacing: 1.5px; text-transform: uppercase; }
+  .success-rank-val { font-family: 'Rajdhani', sans-serif; font-size: 16px; font-weight: 700; color: #e0d4ff; margin-top: 1px; }
+  .success-tag { display: inline-block; padding: 2px 10px; background: rgba(108,71,212,0.2); border: 1px solid #6c47d4; border-radius: 4px; font-size: 10px; color: #a090dd; letter-spacing: 1px; text-transform: uppercase; margin-top: 12px; }
+
+  .footer { background: #07070f; border-top: 1px solid #1e1a3a; padding: 22px; text-align: center; margin-top: 8px; }
+  .footer-logo { font-family: 'Orbitron', sans-serif; font-size: 11px; letter-spacing: 3px; color: #3d2e7a; text-transform: uppercase; }
+  .footer-copy { font-size: 11px; color: #2a2455; margin-top: 6px; }
+</style>
+
+<h2 class="sr-only">Tactician Esports — Mobile Legends Squad Recruitment</h2>
+
+<div id="app">
+  <nav class="navbar">
+    <div class="nav-brand">
+      <svg class="nav-logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="24,3 45,13.5 45,34.5 24,45 3,34.5 3,13.5" fill="#12111f" stroke="#5b35c5" stroke-width="1.5"/>
+        <text x="24" y="30" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="14" font-weight="900" fill="#8b5cf6">T</text>
+      </svg>
+      <span class="nav-name">TACTICIAN</span>
+      <span class="nav-badge">ML SQUAD</span>
+    </div>
+    <span style="font-size:11px; color:#3d2e7a; font-family:'Rajdhani',sans-serif; letter-spacing:1px;">NOW RECRUITING</span>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-content">
+      <div class="hero-emblem">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,5 95,27.5 95,72.5 50,95 5,72.5 5,27.5" fill="#12111f" stroke="#5b35c5" stroke-width="2"/>
+          <polygon points="50,15 85,32.5 85,67.5 50,85 15,67.5 15,32.5" fill="none" stroke="#3d2e7a" stroke-width="1"/>
+          <text x="50" y="58" text-anchor="middle" font-family="Orbitron,sans-serif" font-size="22" font-weight="900" fill="#8b5cf6">T</text>
+          <path d="M30,40 L50,20 L70,40" fill="none" stroke="#6c47d4" stroke-width="2" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="hero-eyebrow">⚔ Mobile Legends Squad — Open Recruitment</div>
+      <div class="hero-title">TACTICIAN<br><span>ESPORTS</span></div>
+      <div class="hero-sub">Strategize. Dominate. Conquer. — We're looking for skilled players to join our squad.</div>
+      <div class="recruit-pill">🔥 Slots Available — Apply Below</div>
+      <div class="hero-divider"></div>
+    </div>
+  </div>
+
+  <!-- ROSTER -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
+      <div class="section-title">Current Roster</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="member-grid">
+      <div class="member-card captain">
+        <div class="member-avatar">AS</div>
+        <div class="member-ign">Asado</div>
+        <div class="member-role">Mid Laner</div>
+        <div class="role-badge">⭐ Captain</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">KJ</div>
+        <div class="member-ign">kjrkzuu</div>
+        <div class="member-role">Gold Laner</div>
+        <div class="role-badge">Member</div>
+      </div>
+      <div class="member-card">
+        <div class="member-avatar">MC</div>
+        <div class="member-ign">Mech4do</div>
+        <div class="member-role">Roamer</div>
+        <div class="role-badge">Member</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BENEFITS -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon"><i class="ti ti-trophy" aria-hidden="true"></i></div>
+      <div class="section-title">Why Join Us</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="benefit-list">
+      <div class="benefit-card b1">
+        <span class="benefit-icon">👕</span>
+        <div class="benefit-name">Official Squad Jersey</div>
+        <ul class="benefit-bullets">
+          <li>Custom-designed Tactician Esports jersey</li>
+          <li>Your IGN printed on the back</li>
+          <li>Earned after active participation</li>
+        </ul>
+      </div>
+      <div class="benefit-card b2">
+        <span class="benefit-icon">🎮</span>
+        <div class="benefit-name">Skill Development</div>
+        <ul class="benefit-bullets">
+          <li>Weekly scrimmages and coaching</li>
+          <li>Role-based strategy sessions</li>
+          <li>Match replay review and analysis</li>
+        </ul>
+      </div>
+      <div class="benefit-card b3">
+        <span class="benefit-icon">🏆</span>
+        <div class="benefit-name">Competitive Exposure</div>
+        <ul class="benefit-bullets">
+          <li>Local and online ML tournaments</li>
+          <li>Ranked team push sessions</li>
+          <li>Path to core roster membership</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION FORM -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-icon"><i class="ti ti-clipboard-list" aria-hidden="true"></i></div>
+      <div class="section-title">Apply Now</div>
+      <div class="section-line"></div>
+    </div>
+    <div class="apply-wrap">
+      <div class="apply-card">
+        <div class="apply-intro">Fill in your details below to apply. The squad leader will review your application and reach out to you.</div>
+
+        <div class="form-group">
+          <label class="form-label">In-Game Name (IGN)</label>
+          <input type="text" class="form-input" id="ign" placeholder="Your ML username"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ML Player ID</label>
+          <input type="text" class="form-input" id="mlid" placeholder="e.g. 123456789"/>
+          <div class="form-hint">Tap your avatar in ML to find your Player ID</div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">ML Server ID</label>
+          <input type="text" class="form-input" id="serverid" placeholder="e.g. 8901"/>
+          <div class="form-hint">The number in parentheses beside your Player ID</div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Current Rank</label>
+          <div class="rank-grid" id="rankGrid">
+            <div class="rank-btn" onclick="selectRank(this,'Warrior','⚔️')">
+              <span class="rank-icon">⚔️</span>
+              <div class="rank-name">Warrior</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Elite','🛡️')">
+              <span class="rank-icon">🛡️</span>
+              <div class="rank-name">Elite</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Master','🗡️')">
+              <span class="rank-icon">🗡️</span>
+              <div class="rank-name">Master</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Grandmaster','🔱')">
+              <span class="rank-icon">🔱</span>
+              <div class="rank-name">Grandmaster</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Epic','💎')">
+              <span class="rank-icon">💎</span>
+              <div class="rank-name">Epic</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Legend','👑')">
+              <span class="rank-icon">👑</span>
+              <div class="rank-name">Legend</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Mythic','🔮')">
+              <span class="rank-icon">🔮</span>
+              <div class="rank-name">Mythic</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Mythical Honor','🌟')">
+              <span class="rank-icon">🌟</span>
+              <div class="rank-name">Mythical Honor</div>
+            </div>
+            <div class="rank-btn" onclick="selectRank(this,'Mythical Immortal','⚡')">
+              <span class="rank-icon">⚡</span>
+              <div class="rank-name">Mythical Immortal</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="apply-btn" onclick="handleApply()">SUBMIT APPLICATION</button>
+
+        <div class="success-card" id="successCard">
+          <div class="success-top">
+            <div class="success-avatar" id="sAvatar">??</div>
+            <div>
+              <div class="success-name" id="sName">—</div>
+              <div class="success-ids" id="sIDs">—</div>
+            </div>
+          </div>
+          <div class="success-rank-display">
+            <div class="success-rank-icon" id="sRankIcon">—</div>
+            <div>
+              <div class="success-rank-label">Current Rank</div>
+              <div class="success-rank-val" id="sRankName">—</div>
+            </div>
+          </div>
+          <div class="success-tag">✓ Application Submitted — Good luck!</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-logo">TACTICIAN ESPORTS · ML SQUAD</div>
+    <div class="footer-copy">Strategize. Dominate. Conquer. © 2025</div>
+  </div>
+</div>
+
+<script>
+  let selectedRank = { name: '', icon: '' };
+
+  function selectRank(el, name, icon) {
+    document.querySelectorAll('.rank-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    selectedRank = { name, icon };
+  }
+
+  function handleApply() {
+    const ign = document.getElementById('ign').value.trim();
+    const mlid = document.getElementById('mlid').value.trim();
+    const serverid = document.getElementById('serverid').value.trim();
+
+    let valid = true;
+    ['ign','mlid','serverid'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el.value.trim()) {
+        el.style.borderColor = '#7c3aed';
+        setTimeout(() => el.style.borderColor = '#2a2455', 2000);
+        valid = false;
+      }
+    });
+    if (!selectedRank.name) {
+      document.getElementById('rankGrid').style.outline = '1px solid #7c3aed';
+      setTimeout(() => document.getElementById('rankGrid').style.outline = 'none', 2000);
+      valid = false;
+    }
+    if (!valid) return;
+
+    const initials = ign.slice(0,2).toUpperCase();
+    document.getElementById('sAvatar').textContent = initials;
+    document.getElementById('sName').textContent = ign;
+    document.getElementById('sIDs').textContent = 'Player ID: ' + mlid + '  |  Server: (' + serverid + ')';
+    document.getElementById('sRankIcon').textContent = selectedRank.icon;
+    document.getElementById('sRankName').textContent = selectedRank.name;
+
+    document.getElementById('successCard').style.display = 'block';
+    document.getElementById('successCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+</script>
